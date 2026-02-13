@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROI Calculator - Leadar.Digital</title>
+    <meta name="description" content="Calculate your potential ROI from B2B lead generation. Get realistic projections based on your industry, budget, and business model.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* ROI Calculator Specific Styles */
+        .calculator-section {
+            background-color: var(--background-light);
+            min-height: calc(100vh - 200px);
+        }
+        
+        .calculator-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .calculator-card {
+            background-color: var(--white);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-2xl);
+            position: relative;
+        }
+        
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--border-color);
+            z-index: 0;
+        }
+        
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-xs);
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+        
+        .progress-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--border-color);
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-weight-bold);
+            transition: var(--transition-normal);
+        }
+        
+        .progress-step.active .progress-circle {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .progress-step.completed .progress-circle {
+            background-color: var(--secondary-color);
+            color: var(--white);
+        }
+        
+        .progress-label {
+            font-size: 14px;
+            color: var(--text-gray);
+            text-align: center;
+        }
+        
+        .calculator-step {
+            display: none;
+        }
+        
+        .calculator-step.active {
+            display: block;
+            animation: fadeInSlide 0.4s ease;
+        }
+        
+        @keyframes fadeInSlide {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .question-group {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .question-label {
+            display: block;
+            font-size: 18px;
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-md);
+            color: var(--text-dark);
+        }
+        
+        .radio-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-md);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        
+        .radio-option:hover {
+            border-color: var(--primary-color);
+            background-color: var(--background-light);
+        }
+        
+        .radio-option input[type="radio"] {
+            margin-right: var(--spacing-md);
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary-color);
+        }
+        
+        .radio-option input[type="radio"]:checked + label {
+            font-weight: var(--font-weight-semibold);
+        }
+        
+        .radio-option.selected {
+            border-color: var(--primary-color);
+            background-color: #E8F0FE;
+        }
+        
+        .slider-container {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .slider-value {
+            display: block;
+            font-size: 24px;
+            font-weight: var(--font-weight-bold);
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: var(--border-color);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: none;
+        }
+        
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--text-gray);
+            margin-top: var(--spacing-xs);
+        }
+        
+        .calculator-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-xl);
+        }
+        
+        .calculator-buttons .btn {
+            flex: 1;
+        }
+        
+        /* Results Styles */
+        .results-section {
+            display: none;
+        }
+        
+        .results-section.active {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .results-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .results-summary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1557b0 100%);
+            color: var(--white);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .summary-item {
+            text-align: center;
+        }
+        
+        .summary-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .summary-value {
+            font-size: 32px;
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .projection-chart {
+            background-color: var(--white);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .month-projection {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .month-projection:last-child {
+            border-bottom: none;
+        }
+        
+        .month-label {
+            min-width: 100px;
+            font-weight: var(--font-weight-semibold);
+        }
+        
+        .month-bar {
+            flex: 1;
+            height: 30px;
+            background-color: var(--primary-color);
+            border-radius: var(--radius-sm);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .month-value {
+            position: absolute;
+            right: var(--spacing-sm);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--white);
+            font-weight: var(--font-weight-semibold);
+            font-size: 14px;
+        }
+        
+        .methodology-box {
+            background-color: var(--background-light);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .comparison-table-results {
+            background-color: var(--white);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .next-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+        }
+        
+        .next-step-card {
+            background-color: var(--white);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-card {
+                padding: var(--spacing-lg);
+            }
+            
+            .progress-bar {
+                flex-wrap: wrap;
+            }
+            
+            .progress-step {
+                flex-basis: 50%;
+                margin-bottom: var(--spacing-md);
+            }
+            
+            .calculator-buttons {
+                flex-direction: column;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .month-projection {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .month-bar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">
+                    <span class="logo-text">Leadar<span class="logo-accent">.Digital</span></span>
+                </a>
+                
+                <div class="nav-menu" id="navMenu">
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link">Industries <span class="dropdown-arrow">▼</span></a>
+                                                                        <div class="dropdown-content">
+                            <a href="property-management-marketing.html">Property Management</a>
+                            <a href="recruitment-agency-marketing.html">Recruitment & HR</a>
+                            <a href="healthcare-marketing.html">Healthcare</a>
+                            <a href="it-services-marketing.html">IT & Technology</a>
+                            <a href="logistics-supply-chain-marketing.html">Logistics & Supply Chain</a>
+                            <a href="financial-services-marketing.html">Financial Services</a>
+                        </div>
+                    </div>
+                    <a href="how-it-works.html" class="nav-link">How It Works</a>
+                    <a href="services.html" class="nav-link">Services</a>
+                    <a href="packages.html" class="nav-link">Packages</a>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link">Resources <span class="dropdown-arrow">▼</span></a>
+                        <div class="dropdown-content">
+                            <a href="blog.html">Blog</a>
+                            <a href="resources.html">Guides & Downloads</a>
+                            <a href="roi-calculator.html">ROI Calculator</a>
+                        </div>
+                    </div>
+                    <a href="index.html#contact" class="btn btn-primary">Get Started</a>
+                </div>
+                
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" style="padding: var(--spacing-2xl) 0;">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title" style="font-size: 42px;">How Much Revenue Could Digital Marketing Generate for Your Business?</h1>
+                <p class="hero-description">Use our B2B Lead Generation ROI Calculator to project your potential returns. Get realistic estimates based on your industry, budget, and business model.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator Section -->
+    <section class="calculator-section">
+        <div class="container">
+            <div class="calculator-container">
+                <div class="calculator-card">
+                    <!-- Progress Bar -->
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-step active">
+                            <div class="progress-circle">1</div>
+                            <span class="progress-label">Your Business</span>
+                        </div>
+                        <div class="progress-step">
+                            <div class="progress-circle">2</div>
+                            <span class="progress-label">Current Marketing</span>
+                        </div>
+                        <div class="progress-step">
+                            <div class="progress-circle">3</div>
+                            <span class="progress-label">Your Goals</span>
+                        </div>
+                        <div class="progress-step">
+                            <div class="progress-circle">4</div>
+                            <span class="progress-label">Contact Info</span>
+                        </div>
+                    </div>
+
+                    <!-- Calculator Steps -->
+                    <div id="calculatorSteps">
+                        <!-- Step 1: Your Business -->
+                        <div class="calculator-step active" data-step="1">
+                            <div class="question-group">
+                                <label class="question-label">1. What industry are you in?</label>
+                                <div class="radio-options">
+                                    <label class="radio-option">
+                                        <input type="radio" name="industry" value="property-management" required>
+                                        Property/Facilities Management
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="industry" value="recruitment">
+                                        Recruitment/HR Services
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="industry" value="professional-services">
+                                        Professional Services (Legal, Accounting, Consulting)
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="industry" value="it-services">
+                                        IT Services/Managed Services
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="industry" value="corporate-training">
+                                        Corporate Training
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="industry" value="logistics">
+                                        Logistics/Supply Chain
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="industry" value="other-b2b">
+                                        Other B2B Services
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="question-group">
+                                <label class="question-label">2. What's your average client value?</label>
+                                <div class="slider-container">
+                                    <span class="slider-value" id="clientValueDisplay">$25,000</span>
+                                    <input type="range" id="clientValue" min="5000" max="200000" step="5000" value="25000">
+                                    <div class="slider-labels">
+                                        <span>$5K</span>
+                                        <span>$200K</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-group">
+                                <label class="question-label">3. What's your typical close rate on qualified leads?</label>
+                                <div class="radio-options">
+                                    <label class="radio-option">
+                                        <input type="radio" name="closeRate" value="12.5">
+                                        10-15% (cold leads, price-competitive)
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="closeRate" value="20">
+                                        15-25% (standard B2B)
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="closeRate" value="30">
+                                        25-35% (warm leads, good positioning)
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="closeRate" value="42.5">
+                                        35-50% (referrals, strong brand)
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="closeRate" value="20">
+                                        Not sure / Don't track
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="calculator-buttons">
+                                <button type="button" class="btn btn-primary" onclick="nextStep()">Next →</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Current Marketing -->
+                        <div class="calculator-step" data-step="2">
+                            <div class="question-group">
+                                <label class="question-label">4. What's your current monthly marketing investment?</label>
+                                <div class="slider-container">
+                                    <span class="slider-value" id="currentBudgetDisplay">$3,000</span>
+                                    <input type="range" id="currentBudget" min="0" max="15000" step="500" value="3000">
+                                    <div class="slider-labels">
+                                        <span>$0</span>
+                                        <span>$15K+</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-group">
+                                <label class="question-label">5. How many qualified leads do you currently get per month?</label>
+                                <div class="slider-container">
+                                    <span class="slider-value" id="currentLeadsDisplay">5 leads</span>
+                                    <input type="range" id="currentLeads" min="0" max="50" step="1" value="5">
+                                    <div class="slider-labels">
+                                        <span>0</span>
+                                        <span>50+</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-group">
+                                <label class="question-label">6. What's your primary lead source currently?</label>
+                                <div class="radio-options">
+                                    <label class="radio-option">
+                                        <input type="radio" name="leadSource" value="referrals">
+                                        Referrals/word-of-mouth
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="leadSource" value="tenders">
+                                        Tenders/RFPs
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="leadSource" value="networking">
+                                        Networking/events
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="leadSource" value="seo">
+                                        Existing website/SEO
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="leadSource" value="paid-ads">
+                                        Paid advertising
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="leadSource" value="none">
+                                        No consistent source
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="calculator-buttons">
+                                <button type="button" class="btn btn-secondary" onclick="previousStep()">← Back</button>
+                                <button type="button" class="btn btn-primary" onclick="nextStep()">Next →</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Your Goals -->
+                        <div class="calculator-step" data-step="3">
+                            <div class="question-group">
+                                <label class="question-label">7. What monthly marketing budget could you invest?</label>
+                                <div class="slider-container">
+                                    <span class="slider-value" id="proposedBudgetDisplay">$4,500</span>
+                                    <input type="range" id="proposedBudget" min="2000" max="12000" step="500" value="4500">
+                                    <div class="slider-labels">
+                                        <span>$2K</span>
+                                        <span>$12K+</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-group">
+                                <label class="question-label">8. What's your primary goal?</label>
+                                <div class="radio-options">
+                                    <label class="radio-option">
+                                        <input type="radio" name="goal" value="replace">
+                                        Replace unpredictable lead sources (tenders, referrals)
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="goal" value="supplement">
+                                        Supplement existing lead generation
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="goal" value="scale">
+                                        Scale rapidly (2x-3x growth)
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="goal" value="new-markets">
+                                        Enter new markets/services
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="goal" value="reduce-cost">
+                                        Reduce cost per acquisition
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="calculator-buttons">
+                                <button type="button" class="btn btn-secondary" onclick="previousStep()">← Back</button>
+                                <button type="button" class="btn btn-primary" onclick="nextStep()">Next →</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Contact Information -->
+                        <div class="calculator-step" data-step="4">
+                            <p style="text-align: center; margin-bottom: var(--spacing-xl); color: var(--text-gray);">
+                                To see your customized ROI projection, enter your details:
+                            </p>
+
+                            <div class="question-group">
+                                <label class="question-label">Name *</label>
+                                <input type="text" id="contactName" class="form-control" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 16px;" required>
+                            </div>
+
+                            <div class="question-group">
+                                <label class="question-label">Email *</label>
+                                <input type="email" id="contactEmail" class="form-control" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 16px;" required>
+                            </div>
+
+                            <div class="question-group">
+                                <label class="question-label">Company *</label>
+                                <input type="text" id="contactCompany" class="form-control" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 16px;" required>
+                            </div>
+
+                            <div class="question-group">
+                                <label class="question-label">Phone (Optional)</label>
+                                <input type="tel" id="contactPhone" class="form-control" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 16px;">
+                            </div>
+
+                            <div class="question-group">
+                                <label style="display: flex; align-items: center; gap: var(--spacing-sm); cursor: pointer;">
+                                    <input type="checkbox" id="emailOptIn" style="width: 20px; height: 20px; accent-color: var(--primary-color);">
+                                    <span style="font-size: 14px; color: var(--text-gray);">Yes, send me the detailed 12-month projection report</span>
+                                </label>
+                            </div>
+
+                            <p style="font-size: 14px; color: var(--text-gray); margin-bottom: var(--spacing-xl);">
+                                <strong>Privacy Note:</strong> We'll email your detailed report and may follow up to discuss your results. No spam. Unsubscribe anytime.
+                            </p>
+
+                            <div class="calculator-buttons">
+                                <button type="button" class="btn btn-secondary" onclick="previousStep()">← Back</button>
+                                <button type="button" class="btn btn-primary" onclick="calculateROI()">Calculate My ROI</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section (Hidden initially) -->
+                <div class="results-section" id="resultsSection">
+                    <div class="results-header">
+                        <h2>Here's Your Projected ROI with Leadar.Digital</h2>
+                        <p class="section-subtitle" id="resultsSubtitle"></p>
+                    </div>
+
+                    <div class="results-summary">
+                        <h3 style="color: var(--white); text-align: center; margin-bottom: var(--spacing-lg);">12-Month Projection</h3>
+                        <div class="summary-grid">
+                            <div class="summary-item">
+                                <div class="summary-label">Investment</div>
+                                <div class="summary-value" id="totalInvestment">-</div>
+                                <div class="summary-label" style="font-size: 12px;">12-month total</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">Expected Leads</div>
+                                <div class="summary-value" id="totalLeads">-</div>
+                                <div class="summary-label" style="font-size: 12px;">12-month total</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">Projected Revenue</div>
+                                <div class="summary-value" id="totalRevenue">-</div>
+                                <div class="summary-label" style="font-size: 12px;">12-month total</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">ROI</div>
+                                <div class="summary-value" id="totalROI">-</div>
+                                <div class="summary-label" style="font-size: 12px;">12-month return</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="projection-chart">
+                        <h3 style="margin-bottom: var(--spacing-lg);">Monthly Lead Projection</h3>
+                        <div id="monthlyProjections"></div>
+                    </div>
+
+                    <div class="methodology-box">
+                        <h4 style="margin-bottom: var(--spacing-md);">How we calculated this:</h4>
+                        <div id="methodology"></div>
+                    </div>
+
+                    <div class="comparison-table-results">
+                        <h3 style="margin-bottom: var(--spacing-lg);">Current vs Projected (Month 12)</h3>
+                        <div id="comparisonTable"></div>
+                    </div>
+
+                    <div class="next-steps">
+                        <div class="next-step-card">
+                            <h3 style="color: var(--primary-color); margin-bottom: var(--spacing-md);">Option 1</h3>
+                            <h4>Get Your Custom Strategy</h4>
+                            <p>Schedule a 45-minute call where we'll review these projections in detail and customize the approach for your business.</p>
+                            <a href="index.html#contact" class="btn btn-primary" style="margin-top: var(--spacing-md);">Schedule Strategy Call</a>
+                        </div>
+                        <div class="next-step-card">
+                            <h3 style="color: var(--primary-color); margin-bottom: var(--spacing-md);">Option 2</h3>
+                            <h4>Download Your Report</h4>
+                            <p>We'll email you this ROI projection as a PDF with month-by-month breakdown and industry benchmarks.</p>
+                            <a href="#" class="btn btn-secondary" style="margin-top: var(--spacing-md);" onclick="downloadReport()">Download PDF Report</a>
+                        </div>
+                    </div>
+
+                    <div style="background-color: #FEF3F2; padding: var(--spacing-md); border-radius: var(--radius-md); margin-top: var(--spacing-xl); border-left: 4px solid var(--accent-color);">
+                        <p style="margin: 0; font-size: 14px;"><strong>Important Disclaimers:</strong> These projections are estimates based on typical results for your industry with similar budgets and client values. Actual results depend on your competitive landscape, quality of your services and sales process, market demand and seasonality, how quickly you respond to leads, and your close rate. We'll provide customized projections based on your specific situation during a strategy call.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="how-it-works.html">How It Works</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="packages.html">Packages</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Industries</h4>
+                                                            <ul>
+                        <li><a href="property-management-marketing.html">Property Management</a></li>
+                        <li><a href="recruitment-agency-marketing.html">Recruitment & HR</a></li>
+                        <li><a href="healthcare-marketing.html">Healthcare</a></li>
+                        <li><a href="it-services-marketing.html">IT & Technology</a></li>
+                        <li><a href="logistics-supply-chain-marketing.html">Logistics & Supply Chain</a></li>
+                        <li><a href="financial-services-marketing.html">Financial Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="resources.html">Guides & Downloads</a></li>
+                        <li><a href="roi-calculator.html">ROI Calculator</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Leadar.Digital. All rights reserved.</p>
+                <p class="footer-tagline">B2B Lead Generation Specialists</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/calculator.js"></script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Budget Calculator - B2B Lead Generation | Leadar.Digital</title>
+    <meta name="description" content="Calculate your optimal B2B marketing budget allocation across channels. Get realistic projections for leads, costs, and ROI based on your industry and goals.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">
+                    <span class="logo-text">Leadar<span class="logo-accent">.Digital</span></span>
+                </a>
+                <div class="nav-menu" id="navMenu">
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link">Industries <span class="dropdown-arrow">▼</span></a>
+                                                                        <div class="dropdown-content">
+                            <a href="property-management-marketing.html">Property Management</a>
+                            <a href="recruitment-agency-marketing.html">Recruitment & HR</a>
+                            <a href="healthcare-marketing.html">Healthcare</a>
+                            <a href="it-services-marketing.html">IT & Technology</a>
+                            <a href="logistics-supply-chain-marketing.html">Logistics & Supply Chain</a>
+                            <a href="financial-services-marketing.html">Financial Services</a>
+                        </div>
+                    </div>
+                    <a href="how-it-works.html" class="nav-link">How It Works</a>
+                    <a href="services.html" class="nav-link">Services</a>
+                    <a href="packages.html" class="nav-link">Packages</a>
+                    <div class="nav-dropdown">
+                        <a href="#" class="nav-link">Resources <span class="dropdown-arrow">▼</span></a>
+                        <div class="dropdown-content">
+                            <a href="blog.html">Blog</a>
+                            <a href="resources.html">Guides & Downloads</a>
+                            <a href="roi-calculator.html">ROI Calculator</a>
+                        </div>
+                    </div>
+                    <a href="contact.html" class="btn btn-primary">Get Started</a>
+                </div>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" style="padding: var(--spacing-2xl) 0;">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Marketing Budget Calculator</h1>
+                <p class="hero-description" style="max-width: 700px; margin: var(--spacing-md) auto 0;">
+                    Get data-driven recommendations for allocating your B2B marketing budget across channels. Calculate expected leads, costs, and ROI based on your industry and goals.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: var(--spacing-2xl) 0; background-color: var(--background-light);">
+        <div class="container" style="max-width: 1000px;">
+            
+            <!-- Calculator Form -->
+            <div style="background-color: var(--white); border-radius: var(--radius-lg); padding: var(--spacing-2xl); box-shadow: var(--shadow-md); margin-bottom: var(--spacing-2xl);">
+                <h2 style="margin-bottom: var(--spacing-xl);">Your Business Information</h2>
+                
+                <form id="budgetCalculatorForm">
+                    <div style="display: grid; gap: var(--spacing-lg);">
+                        
+                        <!-- Industry Selection -->
+                        <div>
+                            <label style="display: block; font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-sm);">Industry</label>
+                            <select id="industry" style="width: 100%; padding: var(--spacing-md); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 16px;">
+                                <option value="property-management">Property Management</option>
+                                <option value="recruitment">Recruitment & HR Services</option>
+                                <option value="healthcare">Healthcare (Clinics & Specialists)</option>
+                                <option value="professional-services">Professional Services (Legal, Accounting)</option>
+                                <option value="other-b2b">Other B2B Services</option>
+                            </select>
+                        </div>
+
+                        <!-- Monthly Budget -->
+                        <div>
+                            <label style="display: block; font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-sm);">
+                                Monthly Marketing Budget (SGD)
+                            </label>
+                            <input type="number" id="monthlyBudget" value="2000" min="500" max="50000" step="100" 
+                                   style="width: 100%; padding: var(--spacing-md); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 16px;">
+                            <p style="margin-top: var(--spacing-xs); font-size: 14px; color: var(--text-gray);">
+                                Recommended: 5-15% of desired monthly revenue
+                            </p>
+                        </div>
+
+                        <!-- Average Customer Value -->
+                        <div>
+                            <label style="display: block; font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-sm);">
+                                Average Customer Lifetime Value (SGD)
+                            </label>
+                            <input type="number" id="customerValue" value="15000" min="1000" max="1000000" step="1000" 
+                                   style="width: 100%; padding: var(--spacing-md); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 16px;">
+                            <p style="margin-top: var(--spacing-xs); font-size: 14px; color: var(--text-gray);">
+                                Total revenue you expect from an average client over the relationship
+                            </p>
+                        </div>
+
+                        <!-- Marketing Goal -->
+                        <div>
+                            <label style="display: block; font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-sm);">Primary Marketing Goal</label>
+                            <select id="marketingGoal" style="width: 100%; padding: var(--spacing-md); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 16px;">
+                                <option value="brand-awareness">Brand Awareness & Long-term Growth</option>
+                                <option value="balanced">Balanced (Brand + Leads)</option>
+                                <option value="lead-generation">Maximum Lead Generation</option>
+                            </select>
+                        </div>
+
+                        <!-- Calculate Button -->
+                        <button type="submit" class="btn btn-primary btn-large" style="width: 100%; margin-top: var(--spacing-md);">
+                            Calculate Budget Allocation
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Section (Hidden until calculation) -->
+            <div id="resultsSection" style="display: none;">
+                
+                <!-- Budget Breakdown -->
+                <div style="background-color: var(--white); border-radius: var(--radius-lg); padding: var(--spacing-2xl); box-shadow: var(--shadow-md); margin-bottom: var(--spacing-xl);">
+                    <h2 style="margin-bottom: var(--spacing-lg);">Recommended Budget Allocation</h2>
+                    <div id="budgetBreakdown" style="display: grid; gap: var(--spacing-md);"></div>
+                </div>
+
+                <!-- Expected Results -->
+                <div style="background-color: var(--white); border-radius: var(--radius-lg); padding: var(--spacing-2xl); box-shadow: var(--shadow-md); margin-bottom: var(--spacing-xl);">
+                    <h2 style="margin-bottom: var(--spacing-lg);">Expected Monthly Results</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg);">
+                        <div style="text-align: center; padding: var(--spacing-lg); background-color: var(--background-light); border-radius: var(--radius-md);">
+                            <div style="font-size: 36px; font-weight: bold; color: var(--primary-color); margin-bottom: var(--spacing-sm);" id="expectedLeads">-</div>
+                            <div style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-xs);">Expected Leads</div>
+                            <div style="font-size: 14px; color: var(--text-gray);">Qualified inquiries/month</div>
+                        </div>
+                        <div style="text-align: center; padding: var(--spacing-lg); background-color: var(--background-light); border-radius: var(--radius-md);">
+                            <div style="font-size: 36px; font-weight: bold; color: var(--primary-color); margin-bottom: var(--spacing-sm);" id="costPerLead">-</div>
+                            <div style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-xs);">Cost Per Lead</div>
+                            <div style="font-size: 14px; color: var(--text-gray);">Average acquisition cost</div>
+                        </div>
+                        <div style="text-align: center; padding: var(--spacing-lg); background-color: var(--background-light); border-radius: var(--radius-md);">
+                            <div style="font-size: 36px; font-weight: bold; color: var(--primary-color); margin-bottom: var(--spacing-sm);" id="expectedClients">-</div>
+                            <div style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-xs);">New Clients</div>
+                            <div style="font-size: 14px; color: var(--text-gray);">At 25% conversion rate</div>
+                        </div>
+                        <div style="text-align: center; padding: var(--spacing-lg); background-color: var(--background-light); border-radius: var(--radius-md);">
+                            <div style="font-size: 36px; font-weight: bold; color: #10B981; margin-bottom: var(--spacing-sm);" id="expectedROI">-</div>
+                            <div style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-xs);">Expected ROI</div>
+                            <div style="font-size: 14px; color: var(--text-gray);">Return on investment</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div style="background-color: var(--white); border-radius: var(--radius-lg); padding: var(--spacing-2xl); box-shadow: var(--shadow-md);">
+                    <h2 style="margin-bottom: var(--spacing-lg);">Strategic Recommendations</h2>
+                    <div id="recommendations" style="display: grid; gap: var(--spacing-md);"></div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="final-cta-section">
+        <div class="container">
+            <h2 class="section-title">Ready to Build Your Marketing Strategy?</h2>
+            <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+                <p style="font-size: 18px; margin-bottom: var(--spacing-xl); color: var(--white);">
+                    This calculator provides general guidelines. Get a custom marketing plan tailored to your specific business, competitors, and market conditions.
+                </p>
+                <a href="contact.html" class="btn btn-primary btn-large">Schedule Your Strategy Call</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="how-it-works.html">How It Works</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="packages.html">Packages</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Industries</h4>
+                                                            <ul>
+                        <li><a href="property-management-marketing.html">Property Management</a></li>
+                        <li><a href="recruitment-agency-marketing.html">Recruitment & HR</a></li>
+                        <li><a href="healthcare-marketing.html">Healthcare</a></li>
+                        <li><a href="it-services-marketing.html">IT & Technology</a></li>
+                        <li><a href="logistics-supply-chain-marketing.html">Logistics & Supply Chain</a></li>
+                        <li><a href="financial-services-marketing.html">Financial Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="resources.html">Guides & Downloads</a></li>
+                        <li><a href="roi-calculator.html">ROI Calculator</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Leadar.Digital. All rights reserved.</p>
+                <p class="footer-tagline">B2B Lead Generation Specialists</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/budget-calculator.js"></script>
+</body>
+</html>
