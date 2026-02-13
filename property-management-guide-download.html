@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download: Property Management Marketing Guide | Leadar.Digital</title>
+    <meta name="description" content="Download your free 28-page Property Management Marketing Guide. Learn proven strategies to generate direct MCST inquiries and break free from tender dependency.">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #2196F3;
+            --accent-color: #FFC107;
+            --text-dark: #E0E0E0;
+            --text-gray: #B0B0B0;
+            --background-light: #333333;
+            --white: #202020; /* this is now a dark background color */
+            --true-white: #FFFFFF; /* for text on dark backgrounds */
+            --border-color: #555555;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .left-column {
+            background: linear-gradient(135deg, #4CAF50 0%, #2196F3 100%);
+            color: var(--true-white);
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: var(--true-white);
+        }
+
+        .left-column h1 {
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .left-column p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: var(--text-dark); opacity: 0.95;
+        }
+
+        .benefits {
+            list-style: none;
+            margin-top: 30px;
+        }
+
+        .benefits li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 16px;
+        }
+
+        .benefits li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 20px;
+            color: var(--secondary-color);
+        }
+
+        .right-column {
+            padding: 60px 50px;
+            background: var(--white);
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #E0E0E0;
+            margin-bottom: 10px;
+        }
+
+                    .form-header p {
+                        color: #B0B0B0;
+                        font-size: 16px;
+                    }
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #E0E0E0;
+            font-size: 14px;
+        }
+
+        .required {
+            color: var(--accent-color);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #555555;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #4CAF50 0%, #2196F3 100%);
+            color: var(--true-white);
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+                    .privacy-notice {
+                        margin-top: 20px;
+                        font-size: 13px;
+                        color: #B0B0B0;
+                        line-height: 1.5;
+                    }
+        .privacy-notice a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .privacy-notice a:hover {
+            text-decoration: underline;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+            color: var(--true-white);
+        }
+
+        .success-message h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #E0E0E0;
+            margin-bottom: 15px;
+        }
+
+                    .success-message p {
+                        font-size: 16px;
+                        color: #B0B0B0;
+                        margin-bottom: 30px;
+                    }
+        .download-btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #4CAF50 0%, #2196F3 100%);
+            color: var(--true-white);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .left-column {
+                padding: 40px 30px;
+            }
+
+            .right-column {
+                padding: 40px 30px;
+            }
+
+            .left-column h1 {
+                font-size: 28px;
+            }
+
+            .form-header h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-column">
+            <div class="logo">Leadar.Digital</div>
+            <h1>Property Management Marketing Guide</h1>
+            <p>28 pages of proven strategies to generate direct MCST inquiries and break free from tender dependency.</p>
+            
+            <ul class="benefits">
+                <li>MCST targeting tactics that work</li>
+                <li>Content calendar template</li>
+                <li>Budget allocation guide</li>
+                <li>Complete digital marketing playbook</li>
+                <li>Actionable strategies you can implement immediately</li>
+                <li>Real examples from successful property management firms</li>
+            </ul>
+        </div>
+
+        <div class="right-column">
+            <div class="form-header">
+                <h2>Get Your Free Guide</h2>
+                <p>Enter your details below to download instantly</p>
+            </div>
+
+            <form id="leadForm">
+                <div class="form-group">
+                    <label for="name">Full Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required placeholder="John Tan">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Work Email <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required placeholder="[email protected]">
+                </div>
+
+                <div class="form-group">
+                    <label for="company">Company Name <span class="required">*</span></label>
+                    <input type="text" id="company" name="company" required placeholder="Your Company Pte Ltd">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number (Optional)</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+65 9123 4567">
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Your Role <span class="required">*</span></label>
+                    <select id="role" name="role" required>
+                        <option value="">Select your role</option>
+                        <option value="Owner/Founder">Owner/Founder</option>
+                        <option value="Managing Director">Managing Director</option>
+                        <option value="Business Development Manager">Business Development Manager</option>
+                        <option value="Marketing Manager">Marketing Manager</option>
+                        <option value="Operations Manager">Operations Manager</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">Download Free Guide</button>
+
+                <div class="privacy-notice">
+                    By downloading this guide, you agree to receive occasional marketing emails from Leadar.Digital. We respect your privacy and you can unsubscribe at any time. Read our <a href="privacy-policy.html">Privacy Policy</a>.
+                </div>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <div class="success-icon">✓</div>
+                <h3>Thank You!</h3>
+                <p>Your guide is ready to download. Click the button below to get your Property Management Marketing Guide.</p>
+                <a href="https://khurramc1.github.io/leadar.digital/assets/Property-Management-Marketing-Guide.pdf" class="download-btn" download>Download Guide Now</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('leadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                company: document.getElementById('company').value,
+                phone: document.getElementById('phone').value,
+                role: document.getElementById('role').value,
+                guide: 'Property Management Marketing Guide',
+                timestamp: new Date().toISOString()
+            };
+
+            // Log to console (in production, send to your backend/CRM)
+            console.log('Lead captured:', formData);
+
+            // Here you would normally send data to your backend/CRM
+            // Example: 
+            // fetch('your-backend-endpoint', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(formData)
+            // });
+
+            // You can also store in localStorage as a simple solution
+            try {
+                const existingLeads = JSON.parse(localStorage.getItem('leads') || '[]');
+                existingLeads.push(formData);
+                localStorage.setItem('leads', JSON.stringify(existingLeads));
+            } catch (e) {
+                console.log('Could not save to localStorage');
+            }
+
+            // Hide form and show success message
+            document.getElementById('leadForm').style.display = 'none';
+            document.querySelector('.form-header').style.display = 'none';
+            document.getElementById('successMessage').classList.add('show');
+        });
+    </script>
+</body>
+</html>
