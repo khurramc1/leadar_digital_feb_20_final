@@ -1,5 +1,5 @@
 // ============================================
-// MARKETING BUDGET CALCULATOR
+// MARKETING BUDGET CALCULATOR - UPDATED WITH REALISTIC DATA
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!form) return; // Only run on calculator page
     
-    // Industry-specific data
+    // Industry-specific data - UPDATED WITH REALISTIC SINGAPORE B2B BENCHMARKS
     const industryData = {
         'property-management': {
             name: 'Property Management',
             avgCostPerLead: 120,
-            conversionRate: 0.20,
+            conversionRate: 0.08,  // FIXED: Was 0.20, now realistic 8%
             recommendedSplit: {
                 seo: 35,
                 paidAds: 25,
@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         'recruitment': {
             name: 'Recruitment & HR',
-            avgCostPerLead: 180,
-            conversionRate: 0.25,
+            avgCostPerLead: 100,  // FIXED: Was 180, now 100
+            conversionRate: 0.15,  // FIXED: Was 0.25, now realistic 15%
             recommendedSplit: {
                 seo: 30,
                 paidAds: 30,
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'healthcare': {
             name: 'Healthcare',
             avgCostPerLead: 150,
-            conversionRate: 0.22,
+            conversionRate: 0.20,  // Kept at 20% - this is realistic
             recommendedSplit: {
                 seo: 40,
                 paidAds: 25,
@@ -47,10 +47,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 other: 5
             }
         },
+        'it-services': {  // NEW INDUSTRY ADDED
+            name: 'IT & Technology Services',
+            avgCostPerLead: 250,
+            conversionRate: 0.10,
+            recommendedSplit: {
+                seo: 35,
+                paidAds: 30,
+                content: 20,
+                linkedin: 10,
+                other: 5
+            }
+        },
+        'logistics': {  // NEW INDUSTRY ADDED
+            name: 'Logistics & Supply Chain',
+            avgCostPerLead: 180,
+            conversionRate: 0.12,
+            recommendedSplit: {
+                seo: 30,
+                paidAds: 35,
+                content: 20,
+                linkedin: 10,
+                other: 5
+            }
+        },
+        'financial-services': {  // NEW INDUSTRY ADDED
+            name: 'Financial Services',
+            avgCostPerLead: 400,
+            conversionRate: 0.06,
+            recommendedSplit: {
+                seo: 35,
+                paidAds: 25,
+                content: 25,
+                linkedin: 10,
+                other: 5
+            }
+        },
         'professional-services': {
             name: 'Professional Services',
-            avgCostPerLead: 200,
-            conversionRate: 0.18,
+            avgCostPerLead: 350,  // FIXED: Was 200, now 350
+            conversionRate: 0.10,  // FIXED: Was 0.18, now realistic 10%
             recommendedSplit: {
                 seo: 35,
                 paidAds: 25,
@@ -62,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'other-b2b': {
             name: 'Other B2B',
             avgCostPerLead: 160,
-            conversionRate: 0.20,
+            conversionRate: 0.12,  // FIXED: Was 0.20, now 12%
             recommendedSplit: {
                 seo: 35,
                 paidAds: 30,
@@ -161,12 +197,12 @@ document.addEventListener('DOMContentLoaded', function() {
             budgetAmounts[channel] = (monthlyBudget * allocation[channel] / 100);
         }
         
-        // Calculate expected results
+        // Calculate expected results - USING CONSERVATIVE ESTIMATES
         const expectedLeads = Math.round(monthlyBudget / industryInfo.avgCostPerLead);
         const costPerLead = Math.round(monthlyBudget / expectedLeads);
         const expectedClients = Math.round(expectedLeads * industryInfo.conversionRate);
         const expectedRevenue = expectedClients * customerValue;
-        const roi = Math.round(((expectedRevenue - monthlyBudget) / monthlyBudget) * 100);
+        const roi = expectedRevenue > monthlyBudget ? Math.round(((expectedRevenue - monthlyBudget) / monthlyBudget) * 100) : 0;
         
         // Display results
         displayResults(budgetAmounts, allocation, expectedLeads, costPerLead, expectedClients, roi, industry, monthlyBudget, customerValue);
@@ -214,13 +250,21 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('expectedLeads').textContent = expectedLeads;
         document.getElementById('costPerLead').textContent = '$' + costPerLead;
         document.getElementById('expectedClients').textContent = expectedClients;
+        
+        // Update conversion rate text dynamically
+        const conversionRateElement = document.querySelector('#expectedClients').parentElement.querySelector('[style*="font-size: 14px"]');
+        if (conversionRateElement) {
+            const actualConversionRate = Math.round(industryData[industry].conversionRate * 100);
+            conversionRateElement.textContent = `At ${actualConversionRate}% conversion rate`;
+        }
+        
         document.getElementById('expectedROI').textContent = roi + '%';
         
         // Display recommendations
         const recommendationsDiv = document.getElementById('recommendations');
         recommendationsDiv.innerHTML = '';
         
-        const recommendations = generateRecommendations(monthlyBudget, customerValue, roi, expectedClients, industry);
+        const recommendations = generateRecommendations(monthlyBudget, customerValue, roi, expectedClients, industry, expectedLeads);
         
         recommendations.forEach((rec, index) => {
             const recElement = document.createElement('div');
@@ -245,18 +289,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    function generateRecommendations(budget, customerValue, roi, expectedClients, industry) {
+    function generateRecommendations(budget, customerValue, roi, expectedClients, industry, expectedLeads) {
         const recommendations = [];
         
+        // Add conservative estimates disclaimer FIRST
+        recommendations.push({
+            type: 'info',
+            icon: '📊',
+            title: 'Conservative Estimates',
+            message: 'These projections use conservative, realistic conversion rates for Singapore B2B services. Actual results depend on your sales process, product-market fit, and execution quality.'
+        });
+        
         // ROI-based recommendations
-        if (roi < 200) {
+        if (roi < 150) {
             recommendations.push({
                 type: 'warning',
                 icon: '⚠️',
                 title: 'Low Expected ROI',
-                message: 'Your projected ROI is below 200%. Consider increasing your budget or focusing on higher-value services to improve returns. Alternatively, optimize your sales conversion rate.'
+                message: 'Your projected ROI is below 150%. Consider increasing your budget, focusing on higher-value services, or improving your sales conversion process to improve returns.'
             });
-        } else if (roi > 500) {
+        } else if (roi > 400) {
             recommendations.push({
                 type: 'success',
                 icon: '🚀',
@@ -290,12 +342,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Expected clients recommendation
-        if (expectedClients < 2) {
+        if (expectedClients < 1) {
             recommendations.push({
                 type: 'warning',
                 icon: '📊',
                 title: 'Low Client Volume',
-                message: 'Expected client volume is low. Ensure your sales process is optimized to convert maximum leads, or consider increasing budget to generate more opportunities.'
+                message: `With ${expectedLeads} leads/month and industry-typical conversion rates, you can expect less than 1 new client per month. Consider increasing budget or focusing on improving your sales conversion rate.`
             });
         } else if (expectedClients >= 5) {
             recommendations.push({
@@ -311,27 +363,42 @@ document.addEventListener('DOMContentLoaded', function() {
             'property-management': {
                 icon: '🏢',
                 title: 'Property Management Strategy',
-                message: 'Focus on MCST-focused content and local SEO. Target property managers actively looking to switch providers. Timeline: expect 4-6 months for strong SEO results.'
+                message: 'Focus on MCST-focused content and local SEO. Target property managers actively looking to switch providers. Timeline: expect 4-6 months for strong SEO results. Typical conversion: 8-10% of leads become clients.'
             },
             'recruitment': {
                 icon: '👥',
                 title: 'Recruitment Strategy',
-                message: 'Position on EOR/PEO services, not just candidate placement. Target employers on LinkedIn. Build authority content around employment law and compliance.'
+                message: 'Position on EOR/PEO services, not just candidate placement. Target employers on LinkedIn. Build authority content around employment law and compliance. Typical conversion: 15-20% of employer leads.'
             },
             'healthcare': {
                 icon: '⚕️',
                 title: 'Healthcare Strategy',
-                message: 'Emphasize educational content and doctor credentials. Target both patients (SEO) and corporate clients (LinkedIn). Ensure all content is compliance-friendly.'
+                message: 'Emphasize educational content and doctor credentials. Target both patients (SEO) and corporate clients (LinkedIn). Ensure all content is compliance-friendly. Typical conversion: 20-25% of leads.'
+            },
+            'it-services': {
+                icon: '💻',
+                title: 'IT Services Strategy',
+                message: 'Long sales cycles (3-6 months) require consistent nurturing. Focus on security certifications and case studies. Target decision-makers, not just IT managers. Typical conversion: 10-12% of leads.'
+            },
+            'logistics': {
+                icon: '🚚',
+                title: 'Logistics Strategy',
+                message: 'Move beyond price-only competition by showcasing certifications, tracking systems, and reliability metrics. Target procurement managers and operations directors. Typical conversion: 12-15% of leads.'
+            },
+            'financial-services': {
+                icon: '💰',
+                title: 'Financial Services Strategy',
+                message: 'Navigate MAS regulations carefully. Longer sales cycles (6-12 months) mean extended nurturing. Focus on trust-building content and credentials. Typical conversion: 6-8% of leads due to complexity.'
             },
             'professional-services': {
                 icon: '💼',
                 title: 'Professional Services Strategy',
-                message: 'Long sales cycles require consistent nurturing. Focus on thought leadership content and LinkedIn networking. Budget for 6-9 month timeframe to ROI.'
+                message: 'Long sales cycles require consistent nurturing. Focus on thought leadership content and LinkedIn networking. Budget for 6-9 month timeframe to ROI. Typical conversion: 10-12% of leads.'
             },
             'other-b2b': {
                 icon: '🔧',
                 title: 'B2B Services Strategy',
-                message: 'Target decision-makers with high-intent keywords. Create problem-solving content. Use LinkedIn for direct outreach to ideal customer profiles.'
+                message: 'Target decision-makers with high-intent keywords. Create problem-solving content. Use LinkedIn for direct outreach to ideal customer profiles. Typical conversion: 12-15% of leads.'
             }
         };
         
@@ -347,7 +414,7 @@ document.addEventListener('DOMContentLoaded', function() {
             type: 'info',
             icon: '⏱️',
             title: 'Realistic Timeline',
-            message: 'Expect 3-6 months for full results. Month 1-2: foundation and testing. Month 3-4: traction and optimization. Month 5-6: momentum and scaling. SEO results compound over time.'
+            message: 'Expect 3-6 months for full results. Month 1-2: foundation and testing (30-40% of target). Month 3-4: traction and optimization (60-70% of target). Month 5-6: momentum and scaling (80-100% of target). SEO results compound over time.'
         });
         
         return recommendations;
