@@ -1,5 +1,5 @@
 // ============================================
-// ROI CALCULATOR LOGIC
+// ROI CALCULATOR LOGIC - UPDATED WITH MISSING INDUSTRIES
 // ============================================
 
 // Calculator state
@@ -177,14 +177,14 @@ function calculateROI() {
         tier = 'growth';
     }
     
-    // Lead ranges by tier
+    // Lead ranges by tier - CONSERVATIVE ESTIMATES
     const leadRanges = {
         'foundation': { min: 8, max: 15, month6: 12 },
         'growth': { min: 15, max: 30, month6: 22 },
         'domination': { min: 30, max: 50, month6: 40 }
     };
     
-    // Industry multipliers (some industries convert better)
+    // Industry multipliers (some industries convert better) - UPDATED
     const industryMultipliers = {
         'property-management': 0.9,
         'recruitment': 1.0,
@@ -192,6 +192,8 @@ function calculateROI() {
         'it-services': 1.05,
         'corporate-training': 1.0,
         'logistics': 0.95,
+        'healthcare': 1.1,  // NEW: Added healthcare
+        'financial-services': 0.85,  // NEW: Added financial services
         'other-b2b': 1.0
     };
     
@@ -203,7 +205,7 @@ function calculateROI() {
     let totalRevenue = 0;
     
     for (let month = 1; month <= 12; month++) {
-        // Lead ramp-up multiplier
+        // Lead ramp-up multiplier - MORE CONSERVATIVE TIMELINE
         let rampMultiplier;
         if (month <= 2) rampMultiplier = 0.3;
         else if (month <= 4) rampMultiplier = 0.6;
@@ -281,7 +283,7 @@ function displayResults() {
     // Scroll to top of results
     window.scrollTo({ top: 0, behavior: 'smooth' });
     
-    // Update subtitle
+    // Update subtitle - UPDATED WITH NEW INDUSTRIES
     const industryNames = {
         'property-management': 'Property Management',
         'recruitment': 'Recruitment',
@@ -289,6 +291,8 @@ function displayResults() {
         'it-services': 'IT Services',
         'corporate-training': 'Corporate Training',
         'logistics': 'Logistics',
+        'healthcare': 'Healthcare',  // NEW
+        'financial-services': 'Financial Services',  // NEW
         'other-b2b': 'B2B Services'
     };
     
@@ -352,6 +356,7 @@ function displayMethodology() {
         'domination': 'Domination'
     };
     
+    // UPDATED WITH NEW INDUSTRIES
     const industryNames = {
         'property-management': 'Property Management',
         'recruitment': 'Recruitment',
@@ -359,6 +364,8 @@ function displayMethodology() {
         'it-services': 'IT Services',
         'corporate-training': 'Corporate Training',
         'logistics': 'Logistics',
+        'healthcare': 'Healthcare',  // NEW
+        'financial-services': 'Financial Services',  // NEW
         'other-b2b': 'B2B Services'
     };
     
@@ -372,7 +379,7 @@ function displayMethodology() {
             <li>Total: ${Math.round(results.totalLeads / 12)} average qualified leads per month</li>
         </ul>
         
-        <p><strong>Close Rate:</strong> You indicated ${calculatorData.closeRate}% close rate. ${calculatorData.closeRate === 20 ? 'Industry average for ' + industryNames[calculatorData.industry] + ' is 20-30%.' : ''}</p>
+        <p><strong>Close Rate:</strong> You indicated ${calculatorData.closeRate}% close rate. ${calculatorData.closeRate === 20 ? 'Industry average for ' + industryNames[calculatorData.industry] + ' is 15-25%.' : ''}</p>
         
         <p><strong>Client Value:</strong> Based on your $${formatNumber(calculatorData.clientValue)} average client value.</p>
         
@@ -386,7 +393,7 @@ function displayMethodology() {
         
         <p><strong>Break-even:</strong> Month ${results.breakEvenMonth}</p>
         
-        <p><strong>Conservative Assumptions:</strong> This projection uses conservative estimates. Many clients exceed these projections by 20-40% as campaigns mature.</p>
+        <p><strong>Conservative Assumptions:</strong> This projection uses conservative estimates. Many clients exceed these projections by 20-40% as campaigns mature and sales processes improve.</p>
     `;
     
     document.getElementById('methodology').innerHTML = html;
